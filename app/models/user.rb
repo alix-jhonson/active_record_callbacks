@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base
-after_touch do |user|
-    puts "You have touched an object"
-  end
+has_many :articles, dependent: :destroy
 end
-u = User.create(name: 'Kuldeep')
-u.touch
+user = User.first
+user.articles.create!
+user.destroy
