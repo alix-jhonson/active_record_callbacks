@@ -1,12 +1,13 @@
 class PictureFile < ActiveRecord::Base
-  after_destroy PictureFileCallbacks.new
-end
+  after_commit :delete_picture_file_from_disk, on: [:destroy]
 
-
-class PictureFileCallbacks
-  def after_destroy(picture_file)
-    if File.exist?(picture_file.filepath)
-      File.delete(picture_file.filepath)
+  def delete_picture_file_from_disk
+    if File.exist?(filepath)
+      File.delete(filepath)
     end
   end
-end
+       PictureFile.transaction do
+  picture_file_1.destroy
+  picture_file_2.save!
+       end
+    end
