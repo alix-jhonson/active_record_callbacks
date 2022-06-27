@@ -1,14 +1,11 @@
 class User < ActiveRecord::Base
-before_validation :normalize_name, on: :create
+after_initialize do |user|
+    puts "You have initialized an object!"
+  end
 
-  # :on takes an array as well
-  after_validation :set_location, on: [ :create, :update ]
-
-  protected
-    def normalize_name
-      self.name = self.name.downcase.titleize
-    end
-
-    def set_location
-      self.location = LocationService.query(self)
+  after_find do |user|
+    puts "You have found an object!"
+  end
 end
+User.new
+User.first
