@@ -1,7 +1,14 @@
 class User < ActiveRecord::Base
-  validates :login, :email, presence: true
+before_validation :normalize_name, on: :create
 
-  before_create do
-    self.name = login.capitalize if name.blank?
-  end
+  # :on takes an array as well
+  after_validation :set_location, on: [ :create, :update ]
+
+  protected
+    def normalize_name
+      self.name = self.name.downcase.titleize
+    end
+
+    def set_location
+      self.location = LocationService.query(self)
 end
