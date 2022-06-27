@@ -9,5 +9,5 @@ class PictureFile < ActiveRecord::Base
        PictureFile.transaction do
   picture_file_1.destroy
   picture_file_2.save!
-       end
-    end
+  end
+end
